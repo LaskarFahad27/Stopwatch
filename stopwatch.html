@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .head{
+            text-shadow: 3px 3px 3px gray;
+        }
+        body{
+            height: 100vh;
+            width: 100vw;
+            background: rgb(189, 189, 202);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .full{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .field{
+            height: 100px;
+            width: 450px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .box{
+            height: 100px;
+            width: 100px;
+            background: rgb(189, 189, 202);
+            border-radius: 4px;
+            box-shadow: 5px 5px 3px rgb(97, 95, 95),
+             -5px -5px 4px rgb(216, 213, 213);
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 70px;
+        }
+        .button{
+            height: 30px;
+            width: 60px;
+            border: none;
+            margin-top: 25px;
+            margin-right: 10px;
+            margin-bottom: 30px;
+            background: rgb(189, 189, 202);
+            border-radius: 4px;
+            box-shadow: 5px 5px 3px rgb(97, 95, 95),
+             -5px -5px 4px rgb(216, 213, 213);
+            font-size: 15px;
+             
+        }
+        .counts{
+            font-size: 20px;
+            max-height: 200px;
+            overflow: scroll;
+        }
+    </style>
+</head>
+<body>
+    <div class="full">
+        <h2 class="head">Stopwatch</h2>
+    <div class="field">
+        <div class="box" id="hr">00</div>
+        <div class="box" id="min">00</div>
+        <div class="box" id="sec">00</div>
+        <div class="box" id="msec">00</div>
+    </div>
+    <div class="btns">
+    <button class="button" id="start">Start</button> 
+    <button onclick="count()" class="button">Count</button>
+    <button onclick="stop()" class="button" id="stop">Stop</button>
+    <button onclick="reset()" class="button" id="reset">Reset</button>
+    </div>
+    <div class="counts" id="counts"></div>
+    
+</div>
+    <script>
+            let box1 = document.getElementById("hr");
+            let box2 = document.getElementById("min");
+            let box3 = document.getElementById("sec");
+            let box4 = document.getElementById("msec");
+            let strt = document.getElementById("start");
+            let counts = document.getElementById("counts");
+            let mlsec = 0;
+            let sec = 0;
+            let min = 0;
+            let hour = 0;
+
+            strt.addEventListener("click", start);
+
+            let interval1, interval2, interval3, interval4;
+
+            function start(){
+                interval4 = setInterval(() =>{
+                    mlsec++;
+                    if(mlsec >= 100){
+                     mlsec = 0;
+                    }else{
+                    box4.innerHTML = mlsec;
+                }if(mlsec<10){
+                    box4.innerText = ("0".concat(mlsec));
+                }
+                },1);
+
+                interval3 = setInterval(() =>{
+                    sec++;
+                    if(sec >= 60){
+                     sec = 0;
+                    }else{
+                    box3.innerHTML = sec;
+                    }if(sec<10){
+                    box3.innerText = ("0".concat(sec));
+                }
+                },1000);
+                interval2 = setInterval(() =>{
+                    min++;
+                    if(min >= 60){
+                     min = 0;
+                    }else{
+                    box2.innerHTML = min;
+                    }if(min<10){
+                    box2.innerText = ("0".concat(min));
+                }
+                },60000);
+                interval1 = setInterval(() =>{
+                    hour++;
+                    if(hour >= 60){
+                     hour = 0;
+                    }else{
+                    box1.innerHTML = hour;
+                    }if(hour<10){
+                    box1.innerText = ("0".concat(hour));
+                }
+                },3600000);
+                strt.removeEventListener("click", start);
+            }
+                function count(){
+                let countMsg = (box1.innerText+" : "+box2.innerText+" : "+box3.innerText+" : "+box4.innerText);
+                counts.innerHTML += countMsg + "<br/>";
+            }
+
+            function stop() {
+                    clearInterval(interval1);
+                    clearInterval(interval2);
+                    clearInterval(interval3);
+                    clearInterval(interval4);
+                    strt.addEventListener("click", start);
+             }
+             function reset(){
+                mlsec = 0;
+                sec = 0;
+                min = 0;
+                hour = 0;
+                box4.innerHTML = "00";
+                box3.innerHTML = "00";
+                box2.innerHTML = "00";
+                box1.innerHTML = "00";
+                counts.innerHTML = "";
+            }
+    </script>
+</body>
+</html>
